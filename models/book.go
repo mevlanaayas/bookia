@@ -9,11 +9,11 @@ import (
 
 type Book struct {
 	gorm.Model
-	Name        string     `json:"name"`
+	Name        string    `json:"name"`
 	CreatedDate time.Time `json:"created_date"`
-	CreatedUser string     `json:"created_user"`
+	CreatedUser string    `json:"created_user"`
 	UpdatedDate time.Time `json:"updated_date"`
-	UpdatedUser string     `json:"updated_user"`
+	UpdatedUser string    `json:"updated_user"`
 }
 
 /*
@@ -30,7 +30,7 @@ func (book *Book) Validate() (map[string]interface{}, bool) {
 	return u.Message(true, "success"), true
 }
 
-func (book *Book) Create() (map[string]interface{}) {
+func (book *Book) Create() map[string]interface{} {
 
 	if resp, ok := book.Validate(); !ok {
 		return resp
@@ -43,7 +43,7 @@ func (book *Book) Create() (map[string]interface{}) {
 	return resp
 }
 
-func GetBook(id uint) (*Book) {
+func GetBook(id uint) *Book {
 
 	book := &Book{}
 	err := GetDB().Table("books").Where("id = ?", id).First(book).Error
@@ -53,7 +53,7 @@ func GetBook(id uint) (*Book) {
 	return book
 }
 
-func GetBooks(username string) ([]*Book) {
+func GetBooks(username string) []*Book {
 
 	books := make([]*Book, 0)
 	err := GetDB().Table("books").Where("created_by = ?", username).Find(&books).Error
