@@ -30,7 +30,7 @@ func main() {
 	router.HandleFunc("/api/me/books", controllers.GetBooksFor).Methods("GET")
 	router.HandleFunc("/api/me/words", controllers.GetWordsFor).Methods("GET")
 	router.HandleFunc("/api/books", controllers.CreateBook).Methods("POST")
-	router.HandleFunc("/api/words", controllers.CreateWord).Methods("POST")
+	router.HandleFunc("/api/words", controllers.CreateWord).Methods("POST").Queries("bookId", "{bookId}").Queries("userId", "{userId}")
 
 	err := http.ListenAndServe(":"+port, router) //Launch the app, visit localhost:8000/api
 	if err != nil {

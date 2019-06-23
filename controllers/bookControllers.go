@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"github.com/mevlanaayas/bookia/models"
 	u "github.com/mevlanaayas/bookia/utils"
 	"net/http"
@@ -22,8 +21,8 @@ var CreateBook = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetBooksFor = func(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	username := params["username"]
+	queryValues := r.URL.Query()
+	username := queryValues.Get("username")
 	data := models.GetBooks(username)
 	resp := u.Message(true, "success")
 	resp["data"] = data

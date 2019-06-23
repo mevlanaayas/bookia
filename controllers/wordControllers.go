@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"github.com/mevlanaayas/bookia/models"
 	u "github.com/mevlanaayas/bookia/utils"
 	"net/http"
@@ -22,14 +21,18 @@ var CreateWord = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetWordsFor = func(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	username := params["username"]
-	strBookId := params["bookId"]
+	queryValues := r.URL.Query()
+	username := queryValues.Get("username")
+	strBookId := queryValues.Get("bookId")
 	bookId, _ := strconv.Atoi(strBookId)
 
+	var data []*models.Word
 	// select by if condition
-	data := models.GetWordsByBook(username, bookId)
-	data := models.GetWords(username)
+	if bookId != 0 {
+		data = models.GetWordsByBook(username, bookId)
+	} else {
+		data = models.GetWords(username)
+	}
 
 	resp := u.Message(true, "success")
 	resp["data"] = data
