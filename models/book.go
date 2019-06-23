@@ -4,16 +4,13 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	u "github.com/mevlanaayas/bookia/utils"
-	"time"
 )
 
 type Book struct {
 	gorm.Model
-	Name        string    `json:"name"`
-	CreatedDate time.Time `json:"created_date"`
-	CreatedUser string    `json:"created_user"`
-	UpdatedDate time.Time `json:"updated_date"`
-	UpdatedUser string    `json:"updated_user"`
+	Name        string `json:"name"`
+	CreatedUser string `json:"created_user"`
+	UpdatedUser string `json:"updated_user"`
 }
 
 /*
@@ -56,7 +53,7 @@ func GetBook(id uint) *Book {
 func GetBooks(username string) []*Book {
 
 	books := make([]*Book, 0)
-	err := GetDB().Table("books").Where("created_by = ?", username).Find(&books).Error
+	err := GetDB().Table("books").Where("created_user = ?", username).Find(&books).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil

@@ -16,6 +16,7 @@ var CreateBook = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, u.Message(false, "Error while decoding request body"))
 		return
 	}
+
 	resp := book.Create()
 	u.Respond(w, resp)
 }

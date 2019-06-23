@@ -6,6 +6,7 @@ import (
 	"github.com/mevlanaayas/bookia/models"
 	u "github.com/mevlanaayas/bookia/utils"
 	"net/http"
+	"strconv"
 )
 
 var CreateWord = func(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +24,13 @@ var CreateWord = func(w http.ResponseWriter, r *http.Request) {
 var GetWordsFor = func(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	username := params["username"]
+	strBookId := params["bookId"]
+	bookId, _ := strconv.Atoi(strBookId)
+
+	// select by if condition
+	data := models.GetWordsByBook(username, bookId)
 	data := models.GetWords(username)
+
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)

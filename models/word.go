@@ -4,19 +4,16 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	u "github.com/mevlanaayas/bookia/utils"
-	"time"
 )
 
 type Word struct {
 	gorm.Model
-	Word        string    `json:"word"`
-	BookId      int       `json:"book_id"`
-	Sentence    string    `json:"sentence"`
-	Translate   string    `json:"translate"`
-	CreatedDate time.Time `json:"created_date"`
-	CreatedUser string    `json:"created_user"`
-	UpdatedDate time.Time `json:"updated_date"`
-	UpdatedUser string    `json:"updated_user"`
+	Word        string `json:"word"`
+	BookId      int    `json:"book_id"`
+	Sentence    string `json:"sentence"`
+	Translate   string `json:"translate"`
+	CreatedUser string `json:"created_user"`
+	UpdatedUser string `json:"updated_user"`
 }
 
 /*
@@ -41,7 +38,7 @@ func (word *Word) Validate() (map[string]interface{}, bool) {
 	return u.Message(true, "success"), true
 }
 
-func (word *Word) Create() (map[string]interface{}) {
+func (word *Word) Create() map[string]interface{} {
 
 	if resp, ok := word.Validate(); !ok {
 		return resp
@@ -54,7 +51,7 @@ func (word *Word) Create() (map[string]interface{}) {
 	return resp
 }
 
-func GetWord(id uint) (*Word) {
+func GetWord(id uint) *Word {
 
 	word := &Word{}
 	err := GetDB().Table("words").Where("id = ?", id).First(word).Error
@@ -64,10 +61,22 @@ func GetWord(id uint) (*Word) {
 	return word
 }
 
-func GetWords(username string) ([]*Word) {
+func GetWords(username string) []*Word {
 
 	words := make([]*Word, 0)
-	err := GetDB().Table("words").Where("created_by = ?", username).Find(&words).Error
+	err := GetDB().Table("words").Where("created_user = ?", username).Find(&words).Error
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	return words
+}
+
+func GetWordsByBook(username string, book_id int) []*Word {
+
+	words := make([]*Word, 0)
+	err := GetDB().Table("words").Where("created_user = ?", username).Find(&words).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
