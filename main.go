@@ -2,15 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	"github.com/mevlanaayas/bookia/controllers"
-	"net/http"
 	"os"
 )
 
 func main() {
-
-	router := mux.NewRouter()
+	router := gin.Default()
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 
 	port := os.Getenv("PORT") //Get port from .env file, we did not specify any port so this should return an empty string when tested locally
 	if port == "" {
@@ -19,11 +22,9 @@ func main() {
 
 	fmt.Println(port)
 
-	err := http.ListenAndServe(":"+port, router) //Launch the app, visit localhost:8000/api
-	if err != nil {
-		fmt.Print(err)
-	}
+	_ = router.Run(":" + port) // listen and serve on 0.0.0.0:8080
 
-	router.HandleFunc("/api/me/books", controllers.GetBooksFor).Methods("GET")
-	router.HandleFunc("/api/me/words", controllers.GetWordsFor).Methods("GET")
+	router.GET("/api/me/books", controllers.GetBooksFor)
+	router.GET("/api/me/words", controllers.GetWordsFor)
+
 }

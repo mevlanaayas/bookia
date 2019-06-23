@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/mux"
 	"github.com/mevlanaayas/bookia/models"
 	u "github.com/mevlanaayas/bookia/utils"
@@ -20,7 +21,9 @@ var CreateBook = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
-var GetBooksFor = func(w http.ResponseWriter, r *http.Request) {
+var GetBooksFor = func(c *gin.Context) {
+	r := c.Request
+	w := c.Writer
 
 	params := mux.Vars(r)
 	username := params["username"]
