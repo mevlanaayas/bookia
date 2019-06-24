@@ -50,6 +50,21 @@ func GetBook(id uint) *Book {
 	return book
 }
 
+func GetAllBooks() []*Word {
+	words := make([]*Word, 0)
+	err := GetDB().Table("books").Find(&words).Error
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	return words
+}
+
+func BookCount() int {
+	return Count("books")
+}
+
 func GetBooks(username string) []*Book {
 
 	books := make([]*Book, 0)

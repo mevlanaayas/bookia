@@ -61,6 +61,22 @@ func GetWord(id uint) *Word {
 	return word
 }
 
+func GetAllWords() []*Word {
+
+	words := make([]*Word, 0)
+	err := GetDB().Table("words").Find(&words).Error
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	return words
+}
+
+func WordCount() int {
+	return Count("words")
+}
+
 func GetWords(username string) []*Word {
 
 	words := make([]*Word, 0)
