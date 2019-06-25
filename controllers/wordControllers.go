@@ -39,3 +39,18 @@ var GetWordsFor = func(w http.ResponseWriter, r *http.Request) {
 	resp["data"] = data
 	u.Respond(w, resp)
 }
+
+var GetRelatedWordsFor = func(w http.ResponseWriter, r *http.Request) {
+	queryValues := r.URL.Query()
+	username := queryValues.Get("username")
+	relatedWordName := queryValues.Get("relatedWord")
+
+	var data []*models.Word
+	// select by if condition
+
+	data = models.GetRelatedWords(relatedWordName, username)
+	resp := u.Message(true, "success")
+	resp["data"] = data
+	u.Respond(w, resp)
+
+}

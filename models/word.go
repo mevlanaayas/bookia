@@ -100,3 +100,23 @@ func GetWordsByBook(username string, book_id int) []*Word {
 
 	return words
 }
+
+func GetRelatedWords(relatedWordName string, username string) []*Word {
+	// to get more related words
+	// we need search first two, three and four letter of the word.
+	words := make([]*Word, 0)
+
+	err := GetDB().Table("word").
+		Where("created_user = ?", username).
+		Where("UPPER(word) LIKE UPPER(?)", relatedWordName+"%").
+		Or("UPPER(word) LIKE UPPER(?)", "%"+relatedWordName).
+		Or("UPPER(word) LIKE UPPER(?)", "%"+relatedWordName+"%").
+		Find(&words).
+		Error
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	return words
+}

@@ -32,6 +32,9 @@ func main() {
 	router.HandleFunc("/api/books", controllers.CreateBook).Methods("POST")
 	router.HandleFunc("/api/words", controllers.CreateWord).Methods("POST")
 	router.HandleFunc("/api/me/stats", controllers.GetStats).Methods("GET")
+	router.HandleFunc("/api/words", controllers.GetRelatedWordsFor).
+		Methods("GET").
+		Queries("relatedWord", "{relatedWord}")
 
 	err := http.ListenAndServe(":"+port, router) //Launch the app, visit localhost:8000/api
 	if err != nil {
