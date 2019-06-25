@@ -16,6 +16,14 @@ var CreateWord = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, u.Message(false, "Error while decoding request body"))
 		return
 	}
+	queryValues := r.URL.Query()
+	username := queryValues.Get("userId")
+	strBookId := queryValues.Get("bookId")
+
+	word.CreatedUser = username
+	word.UpdatedUser = username
+	word.BookId, _ = strconv.Atoi(strBookId)
+
 	resp := word.Create()
 	u.Respond(w, resp)
 }

@@ -8,9 +8,10 @@ import (
 
 type Book struct {
 	gorm.Model
-	Name        string `json:"name"`
-	CreatedUser string `json:"created_user"`
-	UpdatedUser string `json:"updated_user"`
+	Name        string `json:"Name"`
+	CreatedUser string `json:"CreatedUser"`
+	UpdatedUser string `json:"UpdatedUser"`
+	Words       []Word `gorm:"ForeignKey:BookId"` //you need to do like this
 }
 
 /*
@@ -68,6 +69,9 @@ func BookCount() int {
 func GetBooks(username string) []*Book {
 
 	books := make([]*Book, 0)
+
+	GetDB().Table("books").Select("books.*, words.*").Joins("left join words on words.book_id = books.id").Find(&books)
+
 	err := GetDB().Table("books").Where("created_user = ?", username).Find(&books).Error
 	if err != nil {
 		fmt.Println(err)

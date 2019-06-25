@@ -8,12 +8,12 @@ import (
 
 type Word struct {
 	gorm.Model
-	Word        string `json:"word"`
-	BookId      int    `json:"book_id"`
-	Sentence    string `json:"sentence"`
-	Translate   string `json:"translate"`
-	CreatedUser string `json:"created_user"`
-	UpdatedUser string `json:"updated_user"`
+	Word        string `json:"Word"`
+	BookId      int    `json:"BookId"`
+	Sentence    string `json:"Sentence"`
+	Translate   string `json:"Translate"`
+	CreatedUser string `json:"CreatedUser"`
+	UpdatedUser string `json:"UpdatedUser"`
 }
 
 /*
