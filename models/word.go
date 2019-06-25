@@ -54,7 +54,7 @@ func (word *Word) Create() map[string]interface{} {
 func GetWord(id uint) *Word {
 
 	word := &Word{}
-	err := GetDB().Table("words").Where("id = ?", id).First(word).Error
+	err := GetDB().Table("word").Where("id = ?", id).First(word).Error
 	if err != nil {
 		return nil
 	}
@@ -64,7 +64,7 @@ func GetWord(id uint) *Word {
 func GetAllWords() []*Word {
 
 	words := make([]*Word, 0)
-	err := GetDB().Table("words").Find(&words).Error
+	err := GetDB().Table("word").Find(&words).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
@@ -74,13 +74,13 @@ func GetAllWords() []*Word {
 }
 
 func WordCount() int {
-	return Count("words")
+	return Count("word")
 }
 
 func GetWords(username string) []*Word {
 
 	words := make([]*Word, 0)
-	err := GetDB().Table("words").Where("created_user = ?", username).Find(&words).Error
+	err := GetDB().Table("word").Where("created_user = ?", username).Find(&words).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
@@ -92,7 +92,7 @@ func GetWords(username string) []*Word {
 func GetWordsByBook(username string, book_id int) []*Word {
 
 	words := make([]*Word, 0)
-	err := GetDB().Table("words").Where("created_user = ?", username).Find(&words).Error
+	err := GetDB().Table("word").Where("created_user = ?", username).Find(&words).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil

@@ -23,7 +23,7 @@ var CreateBook = func(w http.ResponseWriter, r *http.Request) {
 var GetBooksFor = func(w http.ResponseWriter, r *http.Request) {
 	queryValues := r.URL.Query()
 	username := queryValues.Get("username")
-	data := models.GetBooks(username)
+	data := models.GetBooksWithWords(username)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)

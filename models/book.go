@@ -44,7 +44,7 @@ func (book *Book) Create() map[string]interface{} {
 func GetBook(id uint) *Book {
 
 	book := &Book{}
-	err := GetDB().Table("books").Where("id = ?", id).First(book).Error
+	err := GetDB().Table("book").Where("id = ?", id).First(book).Error
 	if err != nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func GetBook(id uint) *Book {
 
 func GetAllBooks() []*Word {
 	words := make([]*Word, 0)
-	err := GetDB().Table("books").Find(&words).Error
+	err := GetDB().Table("book").Find(&words).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
@@ -63,16 +63,15 @@ func GetAllBooks() []*Word {
 }
 
 func BookCount() int {
-	return Count("books")
+	return Count("book")
 }
 
-func GetBooks(username string) []*Book {
+func GetBooksWithWords(username string) []*Book {
 
 	books := make([]*Book, 0)
 
-	GetDB().Table("books").Select("books.*, words.*").Joins("left join words on words.book_id = books.id").Find(&books)
-
-	err := GetDB().Table("books").Where("created_user = ?", username).Find(&books).Error
+	// getting books with related words
+	err := GetDB().Where("created_user=?", username).Preload("Words").Find(&books).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
