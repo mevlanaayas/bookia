@@ -6,14 +6,22 @@ import (
 	u "github.com/mevlanaayas/bookia/utils"
 )
 
+type WordType struct {
+	Noun      string `json:"Noun"`
+	Verb      string `json:"Verb"`
+	Adjective string `json:"Adjective"`
+	Adverb    string `json:"Adverb"`
+}
+
 type Word struct {
 	gorm.Model
-	Word        string `json:"Word"`
-	BookId      int    `json:"BookId"`
-	Sentence    string `json:"Sentence"`
-	Translate   string `json:"Translate"`
-	CreatedUser string `json:"CreatedUser"`
-	UpdatedUser string `json:"UpdatedUser"`
+	Word        string   `json:"Word"`
+	BookId      int      `json:"BookId"`
+	Sentence    string   `json:"Sentence"`
+	Translate   string   `json:"Translate"`
+	WordType    WordType `json:"WordType"`
+	CreatedUser string   `json:"CreatedUser"`
+	UpdatedUser string   `json:"UpdatedUser"`
 }
 
 /*
@@ -44,7 +52,11 @@ func (word *Word) Create() map[string]interface{} {
 		return resp
 	}
 
-	GetDB().Create(word)
+	err := GetDB().Create(word).Error
+	if err != nil {
+		println(err)
+		return u.Message(false, err.Error())
+	}
 
 	resp := u.Message(true, "success")
 	resp["word"] = word
