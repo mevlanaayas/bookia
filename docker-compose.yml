@@ -1,0 +1,26 @@
+version: "3"
+services:
+  backend:
+    image: trabz/bookia-api:1.0.0
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    environment:
+      - db_name=bookia
+      - db_pass=bookia
+      - db_user=bookia
+      - db_type=postgres
+      - db_host=192.168.0.25
+      - db_port=5433
+      - dev=false
+    ports:
+      - 8000:8000
+    networks:
+      - bookia
+networks:
+  bookia:
