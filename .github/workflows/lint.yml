@@ -1,9 +1,7 @@
 name: Super-Linter
 
-on:
-  push:
-    branches-ignore:
-      - 'master'
+on: [push]
+
 jobs:
   build:
     name: Lint Code Base
